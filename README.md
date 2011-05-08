@@ -46,4 +46,4 @@ Thanks to roozhou.
 
 Copyright 2011 [chocolateboy](mailto:chocolate@cpan.org).
 
-mcfifo is free software; you can redistribute it and/or modify it under the terms of the [WTFPL](misc/tools/mcfifo/mcfifo.c).
+mcfifo is free software; you can redistribute it and/or modify it under the terms of the [WTFPL](http://sam.zoy.org/wtfpl/).
