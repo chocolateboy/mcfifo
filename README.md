@@ -27,8 +27,10 @@ Remove mcfifo.exe.
 
 # Build <a name="Build"></a>
 
+    make
+
 mcfifo is developed on Linux with MinGW. The Makefile requires i586-mingw32msvc-gcc. Patches
-for other build environments welcone.
+for other build environments welcome.
 
 # Version <a name="Version"></a>
 
