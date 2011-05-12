@@ -4,7 +4,7 @@
 #include <windows.h>
 
 #define MCFIFO_BUFSIZE 0x400000 /* 4MB */
-#define MCFIFO_ARGS_LENGTH 512
+#define MCFIFO_ARGS_LENGTH 1024
 #define MCFIFO_USAGE 1
 #define MCFIFO_BAD_ARGS 2
 #define MCFIFO_BAD_CREATE 3
@@ -20,11 +20,11 @@ int usage(char* prgname) {
 
 int append(size_t offset, const char *str, size_t len) {
     if ((offset + len) >= MCFIFO_ARGS_LENGTH) {
+        fprintf(stderr, "Error: Args length exceeds buffer size (%u bytes)\r\n", MCFIFO_ARGS_LENGTH);
         /*
             fprintf(stderr, "OFFSET: %u\r\n", offset);
             fprintf(stderr, "LEN: %u\r\n", len);
             fprintf(stderr, "ARGSLEN: %u\r\n", MCFIFO_ARGS_LENGTH);
-            fprintf(stderr, "Error: args length exceeds buffer size\r\n");
         */
         exit(MCFIFO_BAD_ARGS);
     } else {
