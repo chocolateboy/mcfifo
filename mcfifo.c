@@ -3,15 +3,15 @@
 #include <stdlib.h>
 #include <windows.h>
 
-#define MCFIFO_BUFSIZE 0x400000 /* 4MB */
-#define MCFIFO_ARGS_LENGTH 1024
+#define MCFIFO_BUFSIZE 1024
+#define MCFIFO_ARGS_LENGTH 32768 /* Windows default/max */
 #define MCFIFO_USAGE 1
 #define MCFIFO_BAD_ARGS 2
 #define MCFIFO_BAD_CREATE 3
 #define MCFIFO_BAD_CONNECT 4
 #define MCFIFO_BAD_PROCESS 5
 
-static char args[MCFIFO_ARGS_LENGTH] = { 0 };
+static char MCFIFO_ARGS[MCFIFO_ARGS_LENGTH] = { 0 };
 
 int usage(char* prgname) {
     fprintf(stderr, "usage: %s \\\\.\\pipe\\name cmd [ arg1, ... ]\r\n", prgname);
@@ -28,7 +28,7 @@ int append(size_t offset, const char *str, size_t len) {
         */
         exit(MCFIFO_BAD_ARGS);
     } else {
-        strncat(args + offset, str, len);
+        strncat(MCFIFO_ARGS + offset, str, len);
     }
 
     return offset + len;
@@ -39,8 +39,8 @@ int main(int argc, char **argv) {
     int i;
     size_t j;
     HANDLE hPipe;
-    STARTUPINFOA stinfo = { 0 };
-    PROCESS_INFORMATION pinfo = { 0 };
+    STARTUPINFOA stinfo = { 0, NULL, NULL, NULL, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL };
+    PROCESS_INFORMATION pinfo = { NULL, NULL, 0, 0 };
     SECURITY_ATTRIBUTES sa = { sizeof(SECURITY_ATTRIBUTES), NULL, TRUE }; // TRUE: allow handles to be inherited
 
     if (argc < 3)
@@ -49,8 +49,8 @@ int main(int argc, char **argv) {
     pipe = argv[1];
     cmd = argv[2];
 
-    for (i = 3, j = 0; i < argc; ++i) {
-        if (i > 3)
+    for (i = 2, j = 0; i < argc; ++i) {
+        if (i > 2)
             j = append(j, " ", 1);
         j = append(j, argv[i], strlen(argv[i]));
     }
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
     /*
         fprintf(stderr, "Debug: PIPE: \"%s\"\r\n", pipe);
         fprintf(stderr, "Debug: CMD: \"%s\"\r\n", cmd);
-        fprintf(stderr, "Debug: ARGS: \"%s\"\r\n", args);
+        fprintf(stderr, "Debug: ARGS: \"%s\"\r\n", MCFIFO_ARGS);
     */
 
     hPipe = CreateNamedPipeA(
@@ -89,11 +89,11 @@ int main(int argc, char **argv) {
     stinfo.hStdOutput = GetStdHandle(STD_OUTPUT_HANDLE); /* inherit */
     stinfo.hStdError = GetStdHandle(STD_ERROR_HANDLE); /* inherit */
 
-    if (CreateProcessA(cmd, args, 0, 0, TRUE, 0, NULL, NULL, &stinfo, &pinfo)) {
+    if (CreateProcess(NULL, MCFIFO_ARGS, 0, 0, TRUE, 0, NULL, NULL, &stinfo, &pinfo)) {
         WaitForSingleObject(pinfo.hProcess, INFINITE);
     } else {
         const char * space = argc > 3 ? " " : "";
-        fprintf(stderr, "Error: Can't create process %s%s%s: %lu\r\n", cmd, space, args, GetLastError());
+        fprintf(stderr, "Error: Can't create process %s%s%s: %lu\r\n", cmd, space, MCFIFO_ARGS, GetLastError());
         CloseHandle(hPipe);
         return MCFIFO_BAD_PROCESS;
     }

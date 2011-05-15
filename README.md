@@ -34,11 +34,11 @@ for other build environments welcome.
 
 # Version <a name="Version"></a>
 
-1.0.1
+1.1.0
 
 # Acknowledgments <a name="Acknowledgments"></a>
 
-Loosely based on:
+Based on:
 
 http://forum.doom9.org/showthread.php?p=1226337#post1226337
 
