@@ -19,7 +19,7 @@ e.g.
 
 # Install <a name="Install"></a>
 
-Save [mcfifo.exe](http://github.com/downloads/chocolateboy/mcfifo/mcfifo-1.0.1.exe) to a path accessible from the command line.
+Save [mcfifo.exe](http://github.com/downloads/chocolateboy/mcfifo/mcfifo-1.1.0.exe) to a path accessible from the command line.
 
 # Uninstall <a name="Uninstall"></a>
 
