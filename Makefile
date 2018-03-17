@@ -1,6 +1,8 @@
 CC=i586-mingw32msvc-gcc
 CCOPTS=-Wall -W
 
+.PHONY: all clean
+
 all: mcfifo.c
 	$(CC) $(CCOPTS) -o mcfifo.exe mcfifo.c
 
