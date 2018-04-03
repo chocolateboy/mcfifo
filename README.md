@@ -67,6 +67,4 @@ Based on [this post](http://forum.doom9.org/showthread.php?p=1226337#post1226337
 
 # LICENSE
 
-Copyright 2011-2018 [chocolateboy](mailto:chocolate@cpan.org).
-
-mcfifo is free software; you can redistribute it and/or modify it under the terms of the [WTFPL](http://sam.zoy.org/wtfpl/).
+This is free software; you can redistribute it and/or modify it under the terms of the [CC0](https://creativecommons.org/share-your-work/public-domain/cc0/).
